@@ -42,6 +42,10 @@ int main(void) {
     rc = pthread_create(&threads[thread_id], NULL, multiply, (void *)thread_id);
   }
 
+  for (long thread_id = 0; thread_id < SIZE; ++thread_id) {
+    pthread_join(threads[thread_id], NULL);
+  }
+
   for (int row = 0; row < SIZE; ++row) {
 
     for (int col = 0; col < SIZE; ++col) {
@@ -49,5 +53,7 @@ int main(void) {
     }
     printf("\n");
   }
+  pthread_exit(NULL);
+
   return 0;
 }

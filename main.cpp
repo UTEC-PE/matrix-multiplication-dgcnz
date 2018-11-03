@@ -3,7 +3,7 @@
 #include <pthread.h>
 #include <stdio.h>
 
-#define SIZE 2
+#define SIZE 3
 
 // A*B = C
 int A[SIZE][SIZE];
@@ -28,13 +28,27 @@ int main(void) {
 
   ::A[0][0] = 2;
   ::A[0][1] = 2;
+  ::A[0][2] = 2;
+
   ::A[1][0] = 3;
   ::A[1][1] = 4;
+  ::A[1][2] = 3;
 
-  ::B[0][0] = 4;
-  ::B[0][1] = 5;
-  ::B[1][0] = 6;
-  ::B[1][1] = 7;
+  ::A[2][0] = 3;
+  ::A[2][1] = 4;
+  ::A[2][2] = 3;
+
+  ::B[0][0] = 2;
+  ::B[0][1] = 2;
+  ::B[0][2] = 2;
+
+  ::B[1][0] = 3;
+  ::B[1][1] = 4;
+  ::B[1][2] = 3;
+
+  ::B[2][0] = 3;
+  ::B[2][1] = 4;
+  ::B[2][2] = 3;
 
   pthread_t threads[SIZE];
 
@@ -44,12 +58,28 @@ int main(void) {
     rc = pthread_create(&threads[thread_id], NULL, multiply, (void *)thread_id);
   }
 
+  for (long thread_id = 0; thread_id < SIZE; ++thread_id) {
+    pthread_join(threads[thread_id], NULL);
+  }
+
   for (int row = 0; row < SIZE; ++row) {
+
+    for (int col = 0; col < SIZE; ++col) {
+      printf("%d ", A[row][col]);
+    }
+    printf("   ");
+    for (int col = 0; col < SIZE; ++col) {
+      printf("%d ", B[row][col]);
+    }
+
+    printf("   ");
 
     for (int col = 0; col < SIZE; ++col) {
       printf("%d ", C[row][col]);
     }
     printf("\n");
   }
+  pthread_exit(NULL);
+
   return 0;
 }
